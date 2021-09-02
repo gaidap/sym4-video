@@ -48,6 +48,13 @@
         public function login(): Response {
             return $this->render('front/login.html.twig');
         }
+
+        /**
+         * @Route("/payment", name="payment")
+         */
+        public function payment(): Response {
+            return $this->render('front/payment.html.twig');
+        }
     
         /**
          * @Route("/search-results", methods={"POST"}, name="search_results")
