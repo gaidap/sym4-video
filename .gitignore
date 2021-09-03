@@ -20,3 +20,21 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+###> npm modules###
+/node_modules
+###< npm modules###
+
+###> Webpack encore ###
+/public/assets/css/dashboard.css
+/public/assets/entrypoints.json
+/public/assets/css/login.css
+/public/assets/manifest.json
+###<     Webpack encore ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
