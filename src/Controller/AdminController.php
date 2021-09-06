@@ -24,6 +24,7 @@ class AdminController extends AbstractController
      */
     public function categories(): Response
     {
+
         return $this->render('admin/categories.html.twig');
     }
 
