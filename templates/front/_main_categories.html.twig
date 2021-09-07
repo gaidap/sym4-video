@@ -1,7 +1,7 @@
 {% for mainCategory in mainCategories %}
     <a
             class="p-2 text-dark"
-            href="{{ path('video_list', {'name': mainCategory.name|lower, 'id': mainCategory.id}) }}"
+            href="{{ path('video_list', {'name': mainCategory.name|lower|slugify, 'id': mainCategory.id}) }}"
     >{{ mainCategory.name }}</a>
 {% endfor %}
 
