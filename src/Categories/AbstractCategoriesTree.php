@@ -7,22 +7,30 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class AbstractCategoriesTree
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
+    private EntityManagerInterface $entityManager;
+
+    private UrlGeneratorInterface $urlGenerator;
+
+    private array $categories;
+
+    protected static bool $categoriesFetched = false;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator)
     {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
+        $this->categories = $this->fetchCategories();
     }
 
     abstract public function getCategoryList(array $categories);
+
+    /**
+     * @return array
+     */
+    public function getCategories(): array
+    {
+        return $this->categories;
+    }
 
     protected function getUrlGenerator(): UrlGeneratorInterface
     {
@@ -32,5 +40,17 @@ abstract class AbstractCategoriesTree
     protected function getEntityManager(): EntityManagerInterface
     {
         return $this->entityManager;
+    }
+
+    private function fetchCategories(): array
+    {
+        if (self::$categoriesFetched) {
+            return $this->categories;
+        }
+
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->addSelect('*')->from('category', 'c')->getQuery();
+
+        return $query->getArrayResult();
     }
 }
