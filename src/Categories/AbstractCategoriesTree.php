@@ -24,9 +24,22 @@ abstract class AbstractCategoriesTree
 
     abstract public function getCategoryList(array $categories);
 
-    /**
-     * @return array
-     */
+    public function buildTree(int $parentId = null): array
+    {
+        $treeArr = [];
+        foreach ($this->getCategories() as $category) {
+            if ($category['parent_id'] === $parentId) {
+                $children = $this->buildTree($category['id']);
+                if ($children !== null) {
+                    $category['children'] = $children;
+                }
+                $treeArr[] = $category;
+            }
+        }
+
+        return $treeArr;
+    }
+
     public function getCategories(): array
     {
         return $this->categories;
@@ -49,7 +62,13 @@ abstract class AbstractCategoriesTree
         }
 
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $query = $qb->addSelect('*')->from('category', 'c')->getQuery();
+        $query = $qb
+            ->addSelect('c.id')
+            ->addSelect('c.name')
+            ->addSelect('p.id as parent_id')
+            ->from('App:Category', 'c')
+            ->leftJoin('c.parent', 'p', 'p.id = c.patent_id')
+            ->getQuery();
 
         return $query->getArrayResult();
     }
