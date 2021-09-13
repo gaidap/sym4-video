@@ -7,13 +7,15 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class AbstractCategoriesTree
 {
+    protected static bool $categoriesFetched = false;
+
+    protected string $categoryListHtml = '';
+
     private EntityManagerInterface $entityManager;
 
     private UrlGeneratorInterface $urlGenerator;
 
     private array $categories;
-
-    protected static bool $categoriesFetched = false;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator)
     {
@@ -22,7 +24,7 @@ abstract class AbstractCategoriesTree
         $this->categories = $this->fetchCategories();
     }
 
-    abstract public function getCategoryList(array $categories);
+    abstract public function createCategoryListHtml(array $categories);
 
     public function buildTree(int $parentId = null): array
     {
