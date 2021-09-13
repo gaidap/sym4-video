@@ -9,25 +9,37 @@
         <section class="jumbotron text-center">
             <div class="container">
 
-                <h1 class="jumbotron-heading">Category - Funny</h1>
+                <h1 class="jumbotron-heading">Category - {{ categories.currentCategoryName }}</h1>
                 <div class="btn-group">
                     <div class="dropdown ml-2">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        <button
+                                class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                            Subcategories
+                                aria-haspopup="true" aria-expanded="false"
+                        >
+                            Categories
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <ul class="mr-5">
-                                {{ categories|raw }}
+                                <li>
+                                    <a
+                                            href="{{ path('video_list', {
+                                                'name': categories.rootParentName|slugify|lower,
+                                                'id': categories.rootParentId
+                                            }) }}"
+                                    >{{ categories.rootParentName }}</a>
+                                </li>
+                                {{ categories.categoryListHtml|raw }}
                             </ul>
                         </div>
                     </div>
 
                     <div class="form-row align-items-center ml-3">
                         <form action="#" method="POST">
-                            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect"
-                                    onchange='this.form.submit();'>
+                            <select
+                                    class="custom-select mr-sm-2" id="inlineFormCustomSelect"
+                                    onchange='this.form.submit();'
+                            >
                                 <option selected>Sort...</option>
                                 <option value="1">Highest rated</option>
                                 <option value="2">Title A-Z</option>
@@ -47,8 +59,10 @@
                         <div class="col-md-4">
                             <div class="card mb-4 shadow-sm">
                                 <div align="center" class="embed-responsive embed-responsive-16by9">
-                                    <iframe class="" src="https://player.vimeo.com/video/{{ video }}" frameborder="0"
-                                            allowfullscreen></iframe>
+                                    <iframe
+                                            class="" src="https://player.vimeo.com/video/{{ video }}" frameborder="0"
+                                            allowfullscreen
+                                    ></iframe>
                                 </div>
                                 <div class="card-body">
                                     <h3>Video title</h3>
@@ -57,19 +71,23 @@
 
                                             <i class="fa fa-thumbs-up"><small class="text-muted">(23)</small></i>&nbsp;
                                             <i class="fa fa-thumbs-down"><small class="text-muted">(9)</small></i>
-                                            <button data-toggle="tooltip" data-placement="top"
+                                            <button
+                                                    data-toggle="tooltip" data-placement="top"
                                                     title="Click to like the video"
                                                     type="button"
-                                                    class="btn btn-primary btn-outline-success btn-sm ml-1">
+                                                    class="btn btn-primary btn-outline-success btn-sm ml-1"
+                                            >
                                                 <i class="fa fa-thumbs-up"></i>
                                             </button>
                                             <!-- <button data-toggle="tooltip" data-placement="top" title="You like the video. Click to unlike" type="button" class="btn btn-primary btn-outline-success btn-sm mr-2">
                                             <i class="fa fa-thumbs-up"></i>
                                             </button> -->
-                                            <button data-toggle="tooltip" data-placement="top"
+                                            <button
+                                                    data-toggle="tooltip" data-placement="top"
                                                     title="Click to dislike the video"
                                                     type="button"
-                                                    class="btn btn-primary btn-outline-danger btn-sm ml-1 mr-1">
+                                                    class="btn btn-primary btn-outline-danger btn-sm ml-1 mr-1"
+                                            >
                                                 <i class="fa fa-thumbs-down"></i>
                                             </button>
                                             <!-- <button data-toggle="tooltip" data-placement="top" title="You don't like the video. Click to undo" type="button" class="btn btn-primary btn-outline-danger btn-sm mr-2">
@@ -87,13 +105,16 @@
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
                             <div align="center" class="embed-responsive embed-responsive-16by9">
-                                <iframe class="" src="https://player.vimeo.com/video/113716040" frameborder="0"
-                                        allowfullscreen></iframe>
+                                <iframe
+                                        class="" src="https://player.vimeo.com/video/113716040" frameborder="0"
+                                        allowfullscreen
+                                ></iframe>
                             </div>
                             <div class="card-body">
                                 <h3>Video title</h3>
                                 <p class="card-text text-danger">Video for <b>MEMBERS</b> only. <a
-                                            href="pricing.html.twig">Sign
+                                            href="pricing.html.twig"
+                                    >Sign
                                         up</a> for one month for free.</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">

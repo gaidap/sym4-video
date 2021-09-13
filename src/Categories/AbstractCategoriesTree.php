@@ -11,6 +11,12 @@ abstract class AbstractCategoriesTree
 
     protected string $categoryListHtml = '';
 
+    protected string $rootParentName = '';
+
+    protected string $currentCategoryName = '';
+
+    protected int $rootParentId;
+
     private EntityManagerInterface $entityManager;
 
     private UrlGeneratorInterface $urlGenerator;
@@ -24,7 +30,27 @@ abstract class AbstractCategoriesTree
         $this->categories = $this->fetchCategories();
     }
 
-    abstract public function createCategoryListHtml(array $categories);
+    public function getCategoryListHtml(): string
+    {
+        return $this->categoryListHtml;
+    }
+
+    public function getRootParentName(): string
+    {
+        return $this->rootParentName;
+    }
+
+    public function getCurrentCategoryName(): string
+    {
+        return $this->currentCategoryName;
+    }
+
+    public function getRootParentId(): int
+    {
+        return $this->rootParentId;
+    }
+
+    abstract protected function createCategoryListHtml(array $categories);
 
     public function buildTree(int $parentId = null): array
     {
