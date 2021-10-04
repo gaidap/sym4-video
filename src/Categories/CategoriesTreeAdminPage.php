@@ -34,11 +34,11 @@ class CategoriesTreeAdminPage extends AbstractCategoriesTree
         $name = $this->slugger->slugify($category['name']);
         $editUrl = $this->getUrlGenerator()->generate(
             'edit_category',
-            ['name' => $this->slugger->slugify($name), 'id' => $id]
+            ['id' => $id]
         );
         $deleteUrl = $this->getUrlGenerator()->generate(
-            'edit_category',
-            ['name' => $this->slugger->slugify($name), 'id' => $id]
+            'delete_category',
+            ['id' => $id]
         );
 
         return "<i class='fa-li fa fa-arrow-right'></i>${name} <a href='${editUrl}'>edit</a> <a
