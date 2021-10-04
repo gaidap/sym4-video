@@ -14,14 +14,6 @@ class CategoriesTreeFrontPage extends AbstractCategoriesTree
     private const LI_BEGIN = '<li>';
     private const LI_CLOSE = '</li>';
 
-    private AppExtension $slugger;
-
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator)
-    {
-        parent::__construct($entityManager, $urlGenerator);
-        $this->slugger = new AppExtension();
-    }
-
     protected function createCategoryListHtml(array $categories): void
     {
         $this->categoryListHtml .= self::UL_BEGIN;
@@ -42,7 +34,7 @@ class CategoriesTreeFrontPage extends AbstractCategoriesTree
         $name = $this->slugger->slugify($category['name']);
         $url = $this->getUrlGenerator()->generate(
             'video_list',
-            ['name' => $name, 'id' => $id]
+            ['name' => $this->slugger->slugify($name), 'id' => $id]
         );
 
         return "<a href='${url}'>${name}</a>";

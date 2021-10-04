@@ -2,6 +2,7 @@
 
 namespace App\Categories;
 
+use App\Twig\AppExtension;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -17,6 +18,8 @@ abstract class AbstractCategoriesTree
 
     protected int $rootParentId;
 
+    protected AppExtension $slugger;
+
     private EntityManagerInterface $entityManager;
 
     private UrlGeneratorInterface $urlGenerator;
@@ -28,6 +31,7 @@ abstract class AbstractCategoriesTree
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->categories = $this->fetchCategories();
+        $this->slugger = new AppExtension();
     }
 
     public function getCategoryListHtml(): string
@@ -52,7 +56,7 @@ abstract class AbstractCategoriesTree
 
     abstract protected function createCategoryListHtml(array $categories);
 
-    public function buildTree(int $parentId = null): array
+    protected function buildTree(int $parentId = null): array
     {
         $treeArr = [];
         foreach ($this->getCategories() as $category) {
