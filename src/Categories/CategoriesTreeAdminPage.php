@@ -14,14 +14,14 @@ class CategoriesTreeAdminPage extends AbstractCategoriesTree
     private const LI_BEGIN = '<li>';
     private const LI_CLOSE = '</li>';
 
-    protected function createCategoryListHtml(array $categories): void
+    protected function createCategoryListView(array $categories): void
     {
         $this->categoryListHtml .= self::UL_BEGIN;
         foreach ($categories as $category) {
             $this->categoryListHtml .= self::LI_BEGIN;
             $this->categoryListHtml .= $this->createListItemHtml($category);
             if (!empty($category['children'])) {
-                $this->createCategoryListHtml($category['children']);
+                $this->createCategoryListView($category['children']);
             }
             $this->categoryListHtml .= self::LI_CLOSE;
         }
@@ -46,9 +46,9 @@ class CategoriesTreeAdminPage extends AbstractCategoriesTree
                     href='${deleteUrl}'>delete</a>";
     }
 
-    public function createCategoryList(): void
+    public function buildCategoryList(): void
     {
         $categoryTree = $this->buildTree();
-        $this->createCategoryListHtml($categoryTree);
+        $this->createCategoryListView($categoryTree);
     }
 }

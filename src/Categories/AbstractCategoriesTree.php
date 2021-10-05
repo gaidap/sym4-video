@@ -18,13 +18,16 @@ abstract class AbstractCategoriesTree
 
     protected int $rootParentId;
 
+    protected array $categoriesAsOptions = [];
+
+    protected array $categories;
+
     protected AppExtension $slugger;
 
     private EntityManagerInterface $entityManager;
 
     private UrlGeneratorInterface $urlGenerator;
 
-    private array $categories;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator)
     {
@@ -54,7 +57,12 @@ abstract class AbstractCategoriesTree
         return $this->rootParentId;
     }
 
-    abstract protected function createCategoryListHtml(array $categories);
+    public function getCategoriesAsOptions(): array
+    {
+        return $this->categoriesAsOptions;
+    }
+
+    abstract protected function createCategoryListView(array $categories): void;
 
     protected function buildTree(int $parentId = null): array
     {

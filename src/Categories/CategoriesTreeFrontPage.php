@@ -14,14 +14,14 @@ class CategoriesTreeFrontPage extends AbstractCategoriesTree
     private const LI_BEGIN = '<li>';
     private const LI_CLOSE = '</li>';
 
-    protected function createCategoryListHtml(array $categories): void
+    protected function createCategoryListView(array $categories): void
     {
         $this->categoryListHtml .= self::UL_BEGIN;
         foreach ($categories as $category) {
             $this->categoryListHtml .= self::LI_BEGIN;
             $this->categoryListHtml .= $this->createLinkHtml($category);
             if (!empty($category['children'])) {
-                $this->createCategoryListHtml($category['children']);
+                $this->createCategoryListView($category['children']);
             }
             $this->categoryListHtml .= self::LI_CLOSE;
         }
@@ -40,7 +40,7 @@ class CategoriesTreeFrontPage extends AbstractCategoriesTree
         return "<a href='${url}'>${name}</a>";
     }
 
-    public function createCategoryListWithParentHtml(int $id): void
+    public function buildCategoryListWithParent(int $id): void
     {
         $parentData = $this->findRootParent($id);
         $this->rootParentId = $parentData['id'];
@@ -51,7 +51,7 @@ class CategoriesTreeFrontPage extends AbstractCategoriesTree
         $this->currentCategoryName = $categories[$key]['name'];
 
         $categoryTree = $this->buildTree($this->rootParentId);
-        $this->createCategoryListHtml($categoryTree);
+        $this->createCategoryListView($categoryTree);
     }
 
     private function findRootParent(int $id): array

@@ -1,0 +1,5 @@
+<option value="null">No parent</option>
+{% for category in categories %}
+    <option value="{{ category.id }}">{{ category.name }}</option>
+{% endfor %}
+

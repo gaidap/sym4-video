@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Categories\CategoriesTreeAdminPage;
+use App\Categories\CategoriesTreeOptionList;
 use App\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,10 +27,19 @@ class AdminController extends AbstractController
      */
     public function categories(CategoriesTreeAdminPage $categories): Response
     {
-        $categories->createCategoryList();
+        $categories->buildCategoryList();
 
         return $this->render('admin/categories.html.twig', [
             'categories' => $categories,
+        ]);
+    }
+
+    public function getAllCategoryOptions(CategoriesTreeOptionList $categories): Response
+    {
+        $categories->buildCategoryListOptions();
+
+        return $this->render('admin/_all_category_options.html.twig', [
+            'categories' => $categories->getCategoriesAsOptions()
         ]);
     }
 
