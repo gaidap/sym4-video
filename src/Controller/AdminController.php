@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Categories\CategoriesTreeAdminPage;
 use App\Categories\CategoriesTreeOptionList;
 use App\Entity\Category;
+use App\Form\CategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -23,32 +25,81 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/categories", name="categories")
+     * @Route("/categories", name="categories", methods={"GET","POST"})
      */
-    public function categories(CategoriesTreeAdminPage $categories): Response
+    public function categories(CategoriesTreeAdminPage $categories, Request $request): Response
     {
         $categories->buildCategoryList();
 
+        $newCategory = new Category();
+        $form = $this->createForm(CategoryType::class);
+        if ($this->saveCategory($newCategory, $form, $request)) {
+
+            return $this->redirectToRoute('categories');
+        }
+
+        $isInvalid = null;
+        if ($request->isMethod('POST')) {
+            $isInvalid = ' is-invalid';
+        }
+
         return $this->render('admin/categories.html.twig', [
             'categories' => $categories,
+            'form' => $form->createView(),
+            'is_invalid' => $isInvalid,
         ]);
     }
 
-    public function getAllCategoryOptions(CategoriesTreeOptionList $categories): Response
+    private function saveCategory($category, $form, $request): bool
+    {
+        $form->handleRequest($request);
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            return false;
+        }
+        $category->setName($request->get('category')['name']);
+        $parent = $this
+            ->getDoctrine()
+            ->getRepository(Category::class)
+            ->find($request->get('category')['parent']);
+        $category->setParent($parent);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($category);
+        $em->flush();
+
+        return true;
+    }
+
+    public function getAllCategoryOptions(CategoriesTreeOptionList $categories, ?Category $editedCategory = null): Response
     {
         $categories->buildCategoryListOptions();
 
         return $this->render('admin/_all_category_options.html.twig', [
-            'categories' => $categories->getCategoriesAsOptions()
+            'categories' => $categories->getCategoriesAsOptions(),
+            'editedCategory' => $editedCategory,
         ]);
     }
 
     /**
-     * @Route("/edit-category", name="edit_category")
+     * @Route("/edit-category/{id}", name="edit_category", methods={"GET","POST"})
      */
-    public function editCategory(): Response
+    public function editCategory(Category $category, Request $request): Response
     {
-        return $this->render('admin/edit_category.html.twig');
+        $form = $this->createForm(CategoryType::class);
+        if ($this->saveCategory($category, $form, $request)) {
+
+            return $this->redirectToRoute('categories');
+        }
+
+        $isInvalid = null;
+        if ($request->isMethod('POST')) {
+            $isInvalid = ' is-invalid';
+        }
+
+        return $this->render('admin/edit_category.html.twig', [
+            'edited_category' => $category,
+            'form' => $form->createView(),
+            'is_invalid' => $isInvalid,
+        ]);
     }
 
     /**
