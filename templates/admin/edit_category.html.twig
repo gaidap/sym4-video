@@ -11,14 +11,14 @@
             'class': 'form-control' ~ is_invalid,
             'placeholder': 'category name'
         },
-        'value': edited_category.name,
+        'value': category.name,
         'id': 'validationServer01'
     }) }}
     <br>
     <label for="inlineFormCustomSelect">Parent:</label>
     <select name="category[parent]" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
         {{ render(controller('App\\Controller\\AdminController::getAllCategoryOptions',
-            {'editedCategory': edited_category})) }}
+            {'editedCategory': category})) }}
     </select>
     <div class="invalid-feedback">
         {{ form_errors(form.name) }}

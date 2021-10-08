@@ -56,11 +56,11 @@ class AdminController extends AbstractController
         if (!$form->isSubmitted() || !$form->isValid()) {
             return false;
         }
-        $category->setName($request->get('category')['name']);
+        $category->setName($request->request->get('category')['name']);
         $parent = $this
             ->getDoctrine()
             ->getRepository(Category::class)
-            ->find($request->get('category')['parent']);
+            ->find($request->request->get('category')['parent']);
         $category->setParent($parent);
         $em = $this->getDoctrine()->getManager();
         $em->persist($category);
@@ -84,7 +84,7 @@ class AdminController extends AbstractController
      */
     public function editCategory(Category $category, Request $request): Response
     {
-        $form = $this->createForm(CategoryType::class);
+        $form = $this->createForm(CategoryType::class, $category);
         if ($this->saveCategory($category, $form, $request)) {
 
             return $this->redirectToRoute('categories');
@@ -96,7 +96,7 @@ class AdminController extends AbstractController
         }
 
         return $this->render('admin/edit_category.html.twig', [
-            'edited_category' => $category,
+            'category' => $category,
             'form' => $form->createView(),
             'is_invalid' => $isInvalid,
         ]);
