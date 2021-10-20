@@ -28,7 +28,6 @@ abstract class AbstractCategoriesTree
 
     private UrlGeneratorInterface $urlGenerator;
 
-
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator)
     {
         $this->entityManager = $entityManager;
@@ -60,6 +59,21 @@ abstract class AbstractCategoriesTree
     public function getCategoriesAsOptions(): array
     {
         return $this->categoriesAsOptions;
+    }
+
+    public function setUrlGenerator(UrlGeneratorInterface $urlGenerator): void
+    {
+        $this->urlGenerator = $urlGenerator;
+    }
+
+    public function setSlugger(AppExtension $slugger): void
+    {
+        $this->slugger = $slugger;
+    }
+
+    public function setCategories(array $categories): void
+    {
+        $this->categories = $categories;
     }
 
     abstract protected function createCategoryListView(array $categories): void;

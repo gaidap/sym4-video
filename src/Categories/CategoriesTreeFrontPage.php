@@ -54,7 +54,7 @@ class CategoriesTreeFrontPage extends AbstractCategoriesTree
         $this->createCategoryListView($categoryTree);
     }
 
-    private function findRootParent(int $id): array
+    public function findRootParent(int $id): array
     {
         $categories = $this->getCategories();
         $key = $this->findKey($id, $categories);
