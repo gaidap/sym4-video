@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Utils\Twig;
+namespace App\Tests\controllers\Utils\Twig;
 
 use App\Twig\AppExtension;
 use Generator;

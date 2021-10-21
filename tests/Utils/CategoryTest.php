@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Utils;
+namespace App\Tests\controllers\Utils;
 
 use App\Categories\CategoriesTreeAdminPage;
 use App\Categories\CategoriesTreeFrontPage;
