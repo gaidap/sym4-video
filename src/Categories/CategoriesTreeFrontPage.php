@@ -4,6 +4,7 @@ namespace App\Categories;
 
 use App\Twig\AppExtension;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CategoriesTreeFrontPage extends AbstractCategoriesTree
@@ -13,6 +14,20 @@ class CategoriesTreeFrontPage extends AbstractCategoriesTree
     private const UL_CLOSE = '</ul>';
     private const LI_BEGIN = '<li>';
     private const LI_CLOSE = '</li>';
+
+    public function getChildIds(int $parentId): array
+    {
+        static $ids = [];
+        foreach ($this->getCategories() as $category) {
+            if ($category['parent_id'] == $parentId) {
+                $id = $category['id'];
+                $ids[] = $id . ',';
+                $this->getChildIds($id);
+            }
+        }
+
+        return $ids;
+    }
 
     protected function createCategoryListView(array $categories): void
     {
@@ -74,6 +89,4 @@ class CategoriesTreeFrontPage extends AbstractCategoriesTree
     {
         return array_search($id, array_column($categories, 'id'), true);
     }
-
-
 }
