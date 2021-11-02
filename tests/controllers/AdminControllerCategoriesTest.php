@@ -4,10 +4,8 @@ namespace App\Tests\controllers;
 
 use App\Entity\Category;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AdminControllerCategoriesTest extends WebTestCase
 {
