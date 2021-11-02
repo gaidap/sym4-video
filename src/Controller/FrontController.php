@@ -31,8 +31,7 @@ class FrontController extends AbstractController
         $videos = $this
             ->getDoctrine()
             ->getRepository(Video::class)
-            ->findByChildIds($ids, $page, $request->get('sortOrder'))
-        ;
+            ->findByChildIds($ids, $page, $request->get('sortOrder'));
 
         return $this->render('front/video_list.html.twig', [
             'categories' => $categories,
@@ -81,11 +80,24 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("/search-results", methods={"POST"}, name="search_results")
+     * @Route("/search-results/{page}", methods={"GET"}, defaults={"page": "1"}, name="search_results")
      */
-    public function searchResults(): Response
+    public function searchResults(int $page, Request $request): Response
     {
-        return $this->render('front/search_results.html.twig');
+        $query = $request->get('query');
+        $videos = null;
+        if ($query) {
+            $videos = $this
+                ->getDoctrine()
+                ->getRepository(Video::class)
+                ->findByTitle($query, $page, $request->get('sortOrder'));
+            $videos = !$videos->getItems() ? null : $videos;
+        }
+
+        return $this->render('front/search_results.html.twig', [
+            'videos' => $videos,
+            'query' => $query,
+        ]);
     }
 
     public function mainCategories(): Response

@@ -45,32 +45,25 @@ class VideoRepository extends ServiceEntityRepository
         return $this->paginator->paginate($query, $page, 5);
     }
 
-    // /**
-    //  * @return Video[] Returns an array of Video objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByTitle(string $searchQuery, int $page = 1, ?string $order = 'ASC'): PaginationInterface
     {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $order = $order === 'RATING' ? 'ASC' : $order; // TODO implement order by rating
+        $query = $this->createQueryBuilder('v');
+        foreach ($this->prepareSearchQuery($searchQuery) as $index => $searchTerm) {
+            $query
+                ->orWhere("v.title like :t_$index")
+                ->setParameter("t_$index", '%' . trim($searchTerm) . '%')
+            ;
+        }
+        $query = $query
+            ->orderBy("v.title", $order)
+            ->getQuery();
 
-    /*
-    public function findOneBySomeField($value): ?Video
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $this->paginator->paginate($query, $page, 5);
     }
-    */
+
+    private function prepareSearchQuery(string $searchQuery): array
+    {
+        return explode(' ', $searchQuery);
+    }
 }
