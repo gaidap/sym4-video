@@ -21,7 +21,10 @@
   "homepage": "https://github.com/gaidap/sym4-video#readme",
   "devDependencies": {
     "@symfony/stimulus-bridge": "^2.0.0",
-    "@symfony/webpack-encore": "^1.6.1",
+    "@symfony/webpack-encore": "^1.8.2",
     "stimulus": "^2.0.0"
+  },
+  "dependencies": {
+    "webpack-notifier": "^1.15.0"
   }
 }
